@@ -7,106 +7,141 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+protocol MyViewControllerDelegate {
+    func receiveMsgFromViewModel(message: String)
+    func navToDetailVC(response: Response)
+}
+
+class ViewController: UIViewController, MyViewControllerDelegate {
     
+    private let viewModel = WeatherViewModel()
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    
+    // MARK: - UI
     @IBOutlet weak var searchTextField: UITextField!
     @IBOutlet weak var searchButton: UIButton!
     @IBOutlet weak var tableView: UITableView!
-    var tasks = ["KPWM", "KAUS"]
-    //var tasks = [String]()
+    
+    // MARK: - DATA
+    var airports: [Airport]?
+    var tempAirports = ["KPWM", "KAUS"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "FF Coding Exercise"
+        navigationController?.navigationBar.setNeedsLayout()
         
+        // MARK: - DELEGATES
         searchTextField.delegate = self
         tableView.delegate = self
         tableView.dataSource = self
-                
-        // Create a URLRequest for an API endpoint
-        let url = URL(string: "https://qa.foreflight.com/weather/report/kpwm")!
-        var request = URLRequest(url: url)
-
-        request.setValue(
-            "1",
-            forHTTPHeaderField: "ff-coding-exercise"
-        )
-
-        // Create the HTTP request
-        let session = URLSession.shared
-        let task = session.dataTask(with: request) { (data, response, error) in
-
-            if let error = error {
-                // Handle HTTP request error
-                print(error)
-            } else if let data = data {
-                // Handle HTTP request response
-                print(data)
-                
-                let response: Response = try! JSONDecoder().decode(Response.self, from: data)
-
-                print(response.report.conditions.ident)
+        viewModel.delegate = self
         
-            } else {
-                // Handle unexpected error
-            }
+        do {
+            self.airports = try context.fetch(Airport.fetchRequest())
+        } catch {
+            showAlert(message: "Catch error when fetching from Core Data")
         }
-        task.resume()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        do {
+            self.airports = try context.fetch(Airport.fetchRequest())
+        } catch {
+            showAlert(message: "Catch error when fetching from Core Data")
+        }
+        tableView.reloadData()
+    }
+    
+    func receiveMsgFromViewModel(message: String) {
+        showAlert(message: message)
+    }
+    
+    func showAlert(message: String) {
+        let alert = UIAlertController(title: "", message: message, preferredStyle: .alert)
+        let ok = UIAlertAction(title: "OK", style: .default, handler: { (action) -> Void in })
+        alert.addAction(ok)
+        self.present(alert, animated: true, completion: nil)
     }
     
     @IBAction func searchButtonPressed(_ sender: Any) {
-        if searchTextField.text == "" {
-            print("please enter some text")
+        
+        if searchTextField.text == "" || searchTextField.text == nil {
+            showAlert(message: "Please enter an airport abbreviation.")
+        } else {
+            viewModel.getWeatherReport(forAirport: searchTextField.text!)
+//            Task {
+//                await getWeather(airport: searchTextField.text!)
+//            }
+//            searchTextField.resignFirstResponder()
+        }
+    }
+    
+    func navToDetailVC(response: Response) {
+        let vc = storyboard?.instantiateViewController(identifier: "DetailViewController") as! DetailViewController
+        vc.title = "Weather Conditions"
+        vc.response = response
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    private func getWeather(airport: String) async {
+        print("VC func getWeather was passed airport: \(airport)")
+    }
+}
+
+// MARK: - EXTENSIONS
+extension ViewController: UITableViewDataSource {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if self.airports?.count == 0 {
+            return tempAirports.count
+        }else{
+            return self.airports!.count
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 70.0
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        
+        if self.airports?.count == 0 {
             
-            // Create new Alert
-            var dialogMessage = UIAlertController(title: "", message: "Please enter an airport abbreviation.", preferredStyle: .alert)
-            
-            // Create OK button with action handler
-            let ok = UIAlertAction(title: "OK", style: .default, handler: { (action) -> Void in
-                print("Ok button tapped")
-             })
-            
-            //Add OK button to a dialog message
-            dialogMessage.addAction(ok)
-            
-            // Present Alert to
-            self.present(dialogMessage, animated: true, completion: nil)
+            cell.textLabel?.text = tempAirports[indexPath.row]
             
         }else{
-            print("navigate to detail screen")
-            searchTextField.resignFirstResponder()
-            
-            let vc = storyboard?.instantiateViewController(identifier: "DetailViewController") as! DetailViewController
-            vc.title = "Detail View"
-            vc.task = searchTextField.text
-            navigationController?.pushViewController(vc, animated: true)
+            // Get airport from array and set the label
+            let airport = self.airports![indexPath.row]
+            cell.textLabel?.text = airport.abbreviation
         }
+        
+        cell.textLabel!.font = UIFont.systemFont(ofSize: 24)
+        
+        return cell
     }
 }
 
 extension ViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // un-highlight the row
+        
         tableView.deselectRow(at: indexPath, animated: true)
 
-        let vc = storyboard?.instantiateViewController(identifier: "DetailViewController") as! DetailViewController
-        vc.title = "Detail View"
-        vc.task = searchTextField.text
-        navigationController?.pushViewController(vc, animated: true)
-    }
-}
-
-extension ViewController: UITableViewDataSource {
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tasks.count
-    }
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = tasks[indexPath.row]
-        return cell
+        //let vc = storyboard?.instantiateViewController(identifier: "DetailViewController") as! DetailViewController
+        
+        if self.airports?.count == 0 {
+            //vc.airportAbbr = tempAirports[indexPath.row]
+            viewModel.getWeatherReport(forAirport: tempAirports[indexPath.row])
+        }else{
+            let airport = self.airports![indexPath.row]
+            //vc.airportAbbr = airport.abbreviation
+            viewModel.getWeatherReport(forAirport: airport.abbreviation!)
+        }
+        
+        //navigationController?.pushViewController(vc, animated: true)
     }
 }
 

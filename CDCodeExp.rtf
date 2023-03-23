@@ -1,0 +1,82 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2639
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 Menlo-Regular;\f1\fnil\fcharset0 Menlo-Bold;}
+{\colortbl;\red255\green255\blue255;\red38\green117\blue7;\red255\green255\blue255;\red38\green117\blue7;
+\red0\green0\blue0;\red14\green14\blue255;\red155\green35\blue147;\red57\green0\blue160;\red28\green70\blue74;
+\red196\green26\blue22;\red108\green54\blue169;\red50\green109\blue116;\red28\green0\blue207;}
+{\*\expandedcolortbl;;\csgenericrgb\c14771\c45953\c2591;\csgenericrgb\c100000\c100000\c100000;\csgenericrgb\c14902\c45882\c2745;
+\csgenericrgb\c0\c0\c0\c85000;\csgenericrgb\c5500\c5500\c100000;\csgenericrgb\c60759\c13753\c57628;\csgenericrgb\c22454\c0\c62803;\csgenericrgb\c10981\c27276\c28869;
+\csgenericrgb\c77000\c10200\c8600;\csgenericrgb\c42190\c21278\c66379;\csgenericrgb\c19418\c42935\c45455;\csgenericrgb\c11000\c0\c81000;}
+\margl1440\margr1440\vieww17280\viewh13200\viewkind0
+\deftab791
+\pard\tx791\pardeftab791\pardirnatural\partightenfactor0
+
+\f0\fs32 \cf2 \cb3 //        // 
+\f1\b \cf4 TODO: CHECK CACHE (CORE DATA) FOR ENTITY W/ ABBREVIATION STRING
+\f0\b0 \cf5 \
+\cf2 //        // \cf6 https://nspredicate.xyz\cf5 \
+\cf2 //        // \cf6 https://nspredicate.xyz/#predicate-format-and-arguments\cf5 \
+\cf2 //\cf5 \
+\cf2 //        let myrequest = Airport.fetchRequest()\cf5 \
+\cf2 //        //let sort = NSSortDescriptor(key: "abbreviation", ascending: true)\cf5 \
+\cf2 //        //myrequest.sortDescriptors = [sort]\cf5 \
+\cf2 //\cf5 \
+\cf2 //        do \{\cf5 \
+\cf2 //            let airports = try context.fetch(myrequest)\cf5 \
+\cf2 //            print("Got \\(airports.count) airports") // <-- should only be 0 or 1 if our mergePolicy is working\cf5 \
+\cf2 //\cf5 \
+\cf2 //            // print for loop just to see what we have...\cf5 \
+\cf2 //            for airport in airports \{\cf5 \
+\cf2 //                print("Abbreviation: \\(airport.abbreviation)")\cf5 \
+\cf2 //            \}\cf5 \
+\cf2 //        \} catch \{\cf5 \
+\cf2 //            print("Fetch failed")\cf5 \
+\cf2 //            self.sendMsgToView(message: "Fetch failed.")\cf5 \
+\cf2 //        \}\
+\
+// Create the FetchRequest to get all Airports\cf5 \
+        
+\f1\b \cf7 let
+\f0\b0 \cf5  fetchRequest = \cf8 NSFetchRequest\cf5 <\cf9 Airport\cf5 >(entityName: \cf10 "Airport"\cf5 )\
+        \
+        \cf2 // Add a filter on the request to ONLY get objects where abbreviation matches what we passed in\cf5 \
+        fetchRequest.\cf11 predicate\cf5  = \cf8 NSPredicate\cf5 (\cf8 format\cf5 : \cf10 "abbreviation == %@"\cf5 , forAirport)\
+        \
+        
+\f1\b \cf7 do
+\f0\b0 \cf5  \{\
+            
+\f1\b \cf7 let
+\f0\b0 \cf5  fetchedAirports = 
+\f1\b \cf7 try
+\f0\b0 \cf5  \cf12 context\cf5 .\cf11 fetch\cf5 (fetchRequest)\
+            \cf11 print\cf5 (\cf10 "Got \cf5 \\(fetchedAirports.\cf11 count\cf5 )\cf10  Airport(s) matching \cf5 \\(forAirport)\cf10 "\cf5 )\
+\cf2 //            for airport in fetchedAirports \{\cf5 \
+\cf2 //                print("Abbreviation: \\(String(describing: airport.abbreviation))")\cf5 \
+\cf2 //            \}\cf5 \
+            
+\f1\b \cf7 if
+\f0\b0 \cf5  fetchedAirports.\cf11 count\cf5  == \cf13 0\cf5  \{\
+                \cf2 //self.sendMsgToView(message: "Airport does NOT exist in Core Data, so you should try to fetch from the Internet")\cf5 \
+                \cf11 print\cf5 (\cf10 "Airport does NOT exist in Core Data, so you should try to fetch from the Internet"\cf5 )\
+                \
+                \cf2 // 
+\f1\b \cf4 TODO: Nothing! Let it fall through to the Network Call. :)
+\f0\b0 \cf5 \
+            \}
+\f1\b \cf7 else
+\f0\b0 \cf5 \{\
+                \cf2 //self.sendMsgToView(message: "Airport DOES exist so, you should you its associated/saved Response object - depending on DateCreated")\cf5 \
+                \cf11 print\cf5 (\cf10 "--> Airport DOES exist so, you should you its associated/saved Response object - depending on DateCreated"\cf5 )\
+                \
+                \cf11 print\cf5 (\cf10 "--> you shouldn't see more msgs after this..."\cf5 )\
+                \
+                \cf2 // 
+\f1\b \cf4 TODO: guard against this being false:
+\f0\b0 \cf5 \
+                \cf2 //      someAirports.count == 0 else \{ get local and return \}\cf5 \
+            \}\
+        \} 
+\f1\b \cf7 catch
+\f0\b0 \cf5  \{\
+            \cf11 print\cf5 (\cf10 "Fetch failed"\cf5 )\
+        \}}

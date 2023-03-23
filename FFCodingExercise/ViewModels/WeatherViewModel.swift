@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import CoreData
 
 protocol WeatherViewModelDelegate {
     func sendMsgToView(message: String)
@@ -46,15 +47,48 @@ class WeatherViewModel: WeatherViewModelDelegate {
         delegate?.navToDetailVC(response: response)
     }
     
-    func checkCache() {
-        print("ViewModel: check cache for existing entity...")
+    func getFromLocalCache() {
+        
+        print("ViewModel: Get from local cache instead!! Yeah!")
+        /*
+         Pass a response back!!
+         DispatchQueue.main.async {
+             self.tellViewToShowDetail(response: response)
+         }
+         */
     }
 
     func getWeatherReport(forAirport: String) {
         print("ViewModel: getWeatherReport(forAirport: \(forAirport))")
         
-        // TODO: CHECK CACHE (CORE DATA) FOR ENTITY W/ ABBREVIATION STRING
+        // Create the FetchRequest to get all Airports
+        let fetchRequest = NSFetchRequest<Airport>(entityName: "Airport")
         
+        // Add a filter on the request to ONLY get objects where abbreviation matches what we passed in
+        fetchRequest.predicate = NSPredicate(format: "abbreviation == %@", forAirport)
+        
+        do {
+            // Run the fetch...
+            let fetchedAirports = try context.fetch(fetchRequest)
+            
+            print("Found \(fetchedAirports.count) Airport(s) matching \(forAirport) in your local cache.")
+            //-------------------------- should be 0 or 1
+
+            guard fetchedAirports.count == 0 else {
+                print("::: Oops, fetchedAirports.count does not equal 0!")
+                print("::: meaning, we have something in Core Data")
+                print("::: Note: you won't see any more Networking msgs after this due to return")
+                DispatchQueue.main.async {
+                    self.sendMsgToView(message: "Try getting from cache as opposed to from API call with URLSession.")
+                }
+                getFromLocalCache()
+                return
+            }
+        
+            print(">>> Our guard statement let us pass through!")
+        } catch {
+            print("Fetch failed")
+        }
         
         let searchString = APIConstants.baseUrl + forAirport
         let searchUrl = URL(string: searchString)!
@@ -67,6 +101,7 @@ class WeatherViewModel: WeatherViewModelDelegate {
             guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
                 DispatchQueue.main.async {
                     self.sendMsgToView(message: "Does not seem to be a valid airport.")
+                    print("Does not seem to be a valid airport.")
                 }
                 return
             }
@@ -97,6 +132,7 @@ class WeatherViewModel: WeatherViewModelDelegate {
                 guard response.report.conditions != nil else {
                     DispatchQueue.main.async {
                         self.sendMsgToView(message: "Response does not contain conditions")
+                        print("Response does not contain conditions")
                     }
                     return
                 }

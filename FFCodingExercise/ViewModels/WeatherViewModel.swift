@@ -38,25 +38,7 @@ class WeatherViewModel: WeatherViewModelDelegate {
          */
     }
     
-    func saveAirportToCoreData(textToSave: String) {
-        print("Try saving to Core Data: \(textToSave)")
-        
-        // Create a new Airport object - Airport is a subclass of NSManagedObject which allows us to save to Core Data
-        let newAirport = Airport(context: self.context)
-        newAirport.abbreviation = textToSave
-        newAirport.creationDate = "March 22!"
-        //newAirport.date = "some date"
-        
-        // Save to Core Data
-        do {
-            try self.context.save()
-            print("Success saving \(textToSave) to Core Data")
-        }
-        catch {
-            print("Error in saving to Core Data")
-            //sendMsgToView(message: "Error in saving to Core Data")
-        }
-    }
+    
 
     func getWeatherReport(forAirport: String) {
         print("ViewModel: getWeatherReport(forAirport: \(forAirport))")
@@ -149,8 +131,18 @@ class WeatherViewModel: WeatherViewModelDelegate {
                 print("This is after 2nd guard statement - meaning Conditions is not nil")
                 
                 
+                // All this does is save TTT to Core Data
                 self.saveAirportToCoreData(textToSave: forAirport)
                 
+                // we need something like: updateCache(with: decodedResponse)
+                
+                // ^^ can't we combine them? -- we have Airport Abbreviation and Airport Response
+                
+                // save Airport to Core Data with Airport text
+                // updateCache with Response object
+                
+                
+                // This passes response object to DetailViewController
                 DispatchQueue.main.async {
                     self.tellViewToShowDetail(response: response)
                 }
@@ -162,6 +154,30 @@ class WeatherViewModel: WeatherViewModelDelegate {
             }
         }
         task.resume()
+    }
+    
+    func saveAirportToCoreData(textToSave: String) {
+        print("Try saving to Core Data: \(textToSave)")
+        
+        // Create a new Airport object - Airport is a subclass of NSManagedObject which allows us to save to Core Data
+        let newAirport = Airport(context: self.context)
+        newAirport.abbreviation = textToSave
+        newAirport.creationDate = "March 22!"
+        //newAirport.date = "some date"
+        
+        // Save to Core Data
+        do {
+            try self.context.save()
+            print("Success saving \(textToSave) to Core Data")
+        }
+        catch {
+            print("Error in saving to Core Data")
+            //sendMsgToView(message: "Error in saving to Core Data")
+        }
+    }
+    
+    func updateCache(with decodedResponse: Response) {
+        
     }
     
     func populateWeather(url: URL) async {

@@ -7,20 +7,20 @@
 
 import Foundation
 
-struct Response: Decodable {
+struct Response: Codable {
     let report: Report
 }
 
-struct Report: Decodable {
+struct Report: Codable {
     let conditions: Conditions?
-    //let forecast: Forecast
+    let forecast: Forecast
 }
 
-//struct Forecast: Decodable {
-//    
-//}
+struct Forecast: Codable {
+    let dateIssued: String
+}
 
-struct Conditions: Decodable {
+struct Conditions: Codable {
     //let text, ident: String?
     //let dateIssued: Date?
     let lat, lon: Double?
@@ -31,11 +31,3 @@ struct Conditions: Decodable {
     //let reportedAsHpa: Bool?
     //let densityAltitudeFt, relativeHumidity: Int?
 }
-
-//struct Conditions: Decodable {
-//    let ident: String
-//    let dateIssued: String
-//    let elevationFt: Double
-//    //let tempC: Int
-//    //let dewpointC: Int
-//}

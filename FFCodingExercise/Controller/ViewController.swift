@@ -69,7 +69,7 @@ class ViewController: UIViewController, MyViewControllerDelegate {
     
     @IBAction func searchButtonPressed(_ sender: Any) {
         
-        print("DATE: \(Date.now)")
+        //print("DATE: \(Date.now)")
         
         if searchTextField.text == "" || searchTextField.text == nil {
             showAlert(message: "Please enter an airport abbreviation.")

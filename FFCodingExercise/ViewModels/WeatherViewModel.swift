@@ -19,6 +19,25 @@ class WeatherViewModel: WeatherViewModelDelegate {
     var delegate: MyViewControllerDelegate?
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
+    func sendMsgToView(message: String) {
+        delegate?.receiveMsgFromViewModel(message: message)
+    }
+    
+    func tellViewToShowDetail(response: Response) {
+        delegate?.navToDetailVC(response: response)
+    }
+    
+    func getFromLocalCache() {
+        
+        print("ViewModel: Get from local cache instead!! Yeah!")
+        /*
+         Pass a response back!!
+         DispatchQueue.main.async {
+             self.tellViewToShowDetail(response: response)
+         }
+         */
+    }
+    
     func saveAirportToCoreData(textToSave: String) {
         print("Try saving to Core Data: \(textToSave)")
         
@@ -37,25 +56,6 @@ class WeatherViewModel: WeatherViewModelDelegate {
             print("Error in saving to Core Data")
             //sendMsgToView(message: "Error in saving to Core Data")
         }
-    }
-    
-    func sendMsgToView(message: String) {
-        delegate?.receiveMsgFromViewModel(message: message)
-    }
-    
-    func tellViewToShowDetail(response: Response) {
-        delegate?.navToDetailVC(response: response)
-    }
-    
-    func getFromLocalCache() {
-        
-        print("ViewModel: Get from local cache instead!! Yeah!")
-        /*
-         Pass a response back!!
-         DispatchQueue.main.async {
-             self.tellViewToShowDetail(response: response)
-         }
-         */
     }
 
     func getWeatherReport(forAirport: String) {
@@ -78,13 +78,22 @@ class WeatherViewModel: WeatherViewModelDelegate {
                 print("::: Oops, fetchedAirports.count does not equal 0!")
                 print("::: meaning, we have something in Core Data")
                 print("::: Note: you won't see any more Networking msgs after this due to return")
+                
+                /*
+                 DON'T need all this ^ here b/c we already have the object to pass back!!
                 DispatchQueue.main.async {
                     self.sendMsgToView(message: "Try getting from cache as opposed to from API call with URLSession.")
                 }
-                getFromLocalCache()
+                let test = fetchedAirports.first
+                print("object from CoreData has abbreviation of: \(String(describing: test?.abbreviation))")
+                 */
+                
+                // DON"T even need this:
+                // getFromLocalCache()
+                
+                
                 return
             }
-        
             print(">>> Our guard statement let us pass through!")
         } catch {
             print("Fetch failed")
@@ -139,7 +148,7 @@ class WeatherViewModel: WeatherViewModelDelegate {
                 
                 print("This is after 2nd guard statement - meaning Conditions is not nil")
                 
-                // DON'T SAVE HERE YET
+                
                 self.saveAirportToCoreData(textToSave: forAirport)
                 
                 DispatchQueue.main.async {

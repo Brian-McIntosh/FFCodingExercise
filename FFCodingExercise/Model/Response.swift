@@ -21,10 +21,11 @@ struct Forecast: Codable {
 }
 
 struct Conditions: Codable {
-    //let text, ident: String?
-    //let dateIssued: Date?
-    let lat, lon: Double?
-    let tempC, dewpointC: Int?
+    let ident: String?
+    let lat: Double?
+    let lon: Double?
+    let tempC: Double?
+    let dewpointC: Double?
     let pressureHg: Double?
     //let elevationFt, tempC, dewpointC: Int?
     //let pressureHg, pressureHpa: Double?

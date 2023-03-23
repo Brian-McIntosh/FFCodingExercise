@@ -3,10 +3,20 @@
     <entity name="Airport" representedClassName="Airport" syncable="YES">
         <attribute name="abbreviation" optional="YES" attributeType="String"/>
         <attribute name="creationDate" optional="YES" attributeType="String"/>
+        <relationship name="conditions" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CachedConditions" inverseName="airport" inverseEntity="CachedConditions"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="abbreviation"/>
             </uniquenessConstraint>
         </uniquenessConstraints>
+    </entity>
+    <entity name="CachedConditions" representedClassName="CachedConditions" syncable="YES">
+        <attribute name="dewpointC" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="ident" optional="YES" attributeType="String"/>
+        <attribute name="lat" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="lon" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="pressureHg" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="tempC" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <relationship name="airport" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Airport" inverseName="conditions" inverseEntity="Airport"/>
     </entity>
 </model>

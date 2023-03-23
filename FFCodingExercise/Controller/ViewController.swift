@@ -124,7 +124,7 @@ extension ViewController: UITableViewDataSource {
             // Get airport from array and set the label
             let airport = self.airports![indexPath.row]
             cell.textLabel?.text = airport.abbreviation
-            cell.detailTextLabel?.text = airport.creationDate
+            cell.detailTextLabel?.text = airport.creationDate?.description
         }
         
         cell.textLabel!.font = UIFont.systemFont(ofSize: 24)

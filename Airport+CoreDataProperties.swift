@@ -2,7 +2,7 @@
 //  Airport+CoreDataProperties.swift
 //  FFCodingExercise
 //
-//  Created by Brian McIntosh on 3/22/23.
+//  Created by Brian McIntosh on 3/23/23.
 //
 //
 
@@ -18,6 +18,7 @@ extension Airport {
 
     @NSManaged public var abbreviation: String?
     @NSManaged public var creationDate: String?
+    @NSManaged public var conditions: CachedConditions?
 
 }
 

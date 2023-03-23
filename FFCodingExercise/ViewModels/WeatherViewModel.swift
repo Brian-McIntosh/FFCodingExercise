@@ -73,6 +73,10 @@ class WeatherViewModel: WeatherViewModelDelegate {
                 // DON"T even need this:
                 // getFromLocalCache()
                 
+                print("::: Fetched Airport: \(fetchedAirports.first?.abbreviation)")
+                print("::: Fetched Airport: \(fetchedAirports.first?.creationDate)")
+                print("::: Fetched Airport: \(fetchedAirports.first?.conditions?.lon)")
+                
                 
                 return
             }
@@ -132,12 +136,9 @@ class WeatherViewModel: WeatherViewModelDelegate {
                 
                 
                 // All this does is save TTT to Core Data
-                self.saveAirportToCoreData(textToSave: forAirport)
-                
+                self.saveAirportToCoreData(airportAbbreviation: forAirport, response: response)
                 // we need something like: updateCache(with: decodedResponse)
-                
                 // ^^ can't we combine them? -- we have Airport Abbreviation and Airport Response
-                
                 // save Airport to Core Data with Airport text
                 // updateCache with Response object
                 
@@ -156,23 +157,32 @@ class WeatherViewModel: WeatherViewModelDelegate {
         task.resume()
     }
     
-    func saveAirportToCoreData(textToSave: String) {
-        print("Try saving to Core Data: \(textToSave)")
+    func saveAirportToCoreData(airportAbbreviation: String, response: Response) {
+        print("Try saving to Core Data: \(airportAbbreviation)")
         
-        // Create a new Airport object - Airport is a subclass of NSManagedObject which allows us to save to Core Data
-        let newAirport = Airport(context: self.context)
-        newAirport.abbreviation = textToSave
-        newAirport.creationDate = "March 22!"
-        //newAirport.date = "some date"
+        var newAirport = Airport(context: self.context)
+        newAirport.abbreviation = airportAbbreviation
+        newAirport.creationDate = "some date"
         
+        var newConditions = CachedConditions(context: self.context)
+        newConditions.ident = response.report.conditions?.ident
+        newConditions.lat = response.report.conditions?.lat ?? 0.0
+        newConditions.lon = response.report.conditions?.lon ?? 0.0
+        newConditions.tempC = response.report.conditions?.tempC ?? 0.0
+        newConditions.dewpointC = response.report.conditions?.dewpointC ?? 0.0
+        newConditions.pressureHg = response.report.conditions?.pressureHg ?? 0.0
+        
+        //newConditions.airport = newAirport
+        
+        newAirport.conditions = newConditions
+
         // Save to Core Data
         do {
             try self.context.save()
-            print("Success saving \(textToSave) to Core Data")
+            print("Success saving \(airportAbbreviation) to Core Data")
         }
         catch {
-            print("Error in saving to Core Data")
-            //sendMsgToView(message: "Error in saving to Core Data")
+            print("Error in saving \(airportAbbreviation) to Core Data")
         }
     }
     

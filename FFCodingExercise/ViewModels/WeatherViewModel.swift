@@ -24,6 +24,8 @@ class WeatherViewModel: WeatherViewModelDelegate {
         // Create a new Airport object - Airport is a subclass of NSManagedObject which allows us to save to Core Data
         let newAirport = Airport(context: self.context)
         newAirport.abbreviation = textToSave
+        newAirport.creationDate = "March 22!"
+        //newAirport.date = "some date"
         
         // Save to Core Data
         do {
@@ -43,9 +45,16 @@ class WeatherViewModel: WeatherViewModelDelegate {
     func tellViewToShowDetail(response: Response) {
         delegate?.navToDetailVC(response: response)
     }
+    
+    func checkCache() {
+        print("ViewModel: check cache for existing entity...")
+    }
 
     func getWeatherReport(forAirport: String) {
         print("ViewModel: getWeatherReport(forAirport: \(forAirport))")
+        
+        // TODO: CHECK CACHE (CORE DATA) FOR ENTITY W/ ABBREVIATION STRING
+        
         
         let searchString = APIConstants.baseUrl + forAirport
         let searchUrl = URL(string: searchString)!
@@ -62,10 +71,8 @@ class WeatherViewModel: WeatherViewModelDelegate {
                 return
             }
             
-            print("This is after the guard statement - meaning 200 httpResponse")
+            print("This is after 1st guard statement - meaning 200 httpResponse")
             
-            self.saveAirportToCoreData(textToSave: forAirport)
-
             if let error = error {
                 
                 // Handle HTTP request error
@@ -78,10 +85,26 @@ class WeatherViewModel: WeatherViewModelDelegate {
                 
                 // Handle HTTP request response
                 // print(data)
-                let response: Response = try! JSONDecoder().decode(Response.self, from: data)
+                
+                let decoder = JSONDecoder()
+                decoder.dateDecodingStrategy = .iso8601
+                
+                let response: Response = try! decoder.decode(Response.self, from: data)
 //                print(response.report.conditions.ident)
 //                print(response.report.conditions.dateIssued)
 //                print(response.report.conditions.elevationFt)
+                
+                guard response.report.conditions != nil else {
+                    DispatchQueue.main.async {
+                        self.sendMsgToView(message: "Response does not contain conditions")
+                    }
+                    return
+                }
+                
+                print("This is after 2nd guard statement - meaning Conditions is not nil")
+                
+                // DON'T SAVE HERE YET
+                self.saveAirportToCoreData(textToSave: forAirport)
                 
                 DispatchQueue.main.async {
                     self.tellViewToShowDetail(response: response)

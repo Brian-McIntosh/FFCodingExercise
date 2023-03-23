@@ -12,7 +12,7 @@ struct Response: Decodable {
 }
 
 struct Report: Decodable {
-    let conditions: Conditions
+    let conditions: Conditions?
     //let forecast: Forecast
 }
 

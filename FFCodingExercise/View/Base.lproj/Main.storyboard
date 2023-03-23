@@ -11,7 +11,7 @@
         <!--Settings-->
         <scene sceneID="VvE-2S-XVy">
             <objects>
-                <viewController id="YVl-Kf-hrX" sceneMemberID="viewController">
+                <viewController id="YVl-Kf-hrX" customClass="SettingsViewController" customModule="FFCodingExercise" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="o6M-LL-3um">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -32,14 +32,27 @@ etc.</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="27"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
-                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="UlN-VB-QTp">
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="15" minValue="1" maxValue="30" translatesAutoresizingMaskIntoConstraints="NO" id="UlN-VB-QTp">
                                 <rect key="frame" x="14" y="115" width="365" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="29" id="tdb-h9-CyB"/>
                                 </constraints>
+                                <connections>
+                                    <action selector="sliderValueChanged:" destination="YVl-Kf-hrX" eventType="valueChanged" id="9jC-mS-S1z"/>
+                                </connections>
                             </slider>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="How often do you want to check for new updates?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YE8-fJ-cg9">
                                 <rect key="frame" x="16" y="170" width="361" height="57"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="15 min" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PHv-Fs-NBb">
+                                <rect key="frame" x="146.66666666666666" y="88" width="100" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="b4B-Ig-Da9"/>
+                                    <constraint firstAttribute="width" constant="100" id="tHg-zT-GYB"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -49,21 +62,28 @@ etc.</string>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="Ose-az-Jm7" firstAttribute="top" secondItem="yl8-qA-55F" secondAttribute="top" constant="184" id="13z-BE-DAc"/>
+                            <constraint firstItem="PHv-Fs-NBb" firstAttribute="top" secondItem="yl8-qA-55F" secondAttribute="top" constant="29" id="46z-lH-8jn"/>
                             <constraint firstItem="Ose-az-Jm7" firstAttribute="top" secondItem="YE8-fJ-cg9" secondAttribute="bottom" constant="16" id="ATE-7C-OwT"/>
                             <constraint firstItem="Ose-az-Jm7" firstAttribute="leading" secondItem="o6M-LL-3um" secondAttribute="leadingMargin" id="BaS-nk-QZD"/>
                             <constraint firstItem="YE8-fJ-cg9" firstAttribute="trailing" secondItem="Ose-az-Jm7" secondAttribute="trailing" id="CHW-hk-Fbb"/>
                             <constraint firstItem="YE8-fJ-cg9" firstAttribute="leading" secondItem="Ose-az-Jm7" secondAttribute="leading" id="DUX-kj-LEM"/>
+                            <constraint firstItem="PHv-Fs-NBb" firstAttribute="centerX" secondItem="o6M-LL-3um" secondAttribute="centerX" id="FR5-Ws-gfY"/>
                             <constraint firstItem="YE8-fJ-cg9" firstAttribute="top" secondItem="UlN-VB-QTp" secondAttribute="bottom" constant="26" id="FdW-nU-Era"/>
                             <constraint firstItem="Ose-az-Jm7" firstAttribute="trailing" secondItem="o6M-LL-3um" secondAttribute="trailingMargin" id="Ixa-YE-6Iv"/>
                             <constraint firstItem="UlN-VB-QTp" firstAttribute="top" secondItem="yl8-qA-55F" secondAttribute="top" constant="56" id="Mtr-nR-6pZ"/>
                             <constraint firstItem="UlN-VB-QTp" firstAttribute="leading" secondItem="YE8-fJ-cg9" secondAttribute="leading" id="h6i-ix-CMG"/>
                             <constraint firstItem="yl8-qA-55F" firstAttribute="bottom" secondItem="Ose-az-Jm7" secondAttribute="bottom" constant="220" id="hyV-Ky-33K"/>
+                            <constraint firstItem="UlN-VB-QTp" firstAttribute="top" secondItem="PHv-Fs-NBb" secondAttribute="bottom" constant="6" id="raq-yg-2ef"/>
                             <constraint firstItem="UlN-VB-QTp" firstAttribute="trailing" secondItem="YE8-fJ-cg9" secondAttribute="trailing" id="sMu-0P-h9e"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Settings" image="gearshape" catalog="system" id="RxR-YZ-MMZ">
                         <color key="badgeColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBarItem>
+                    <connections>
+                        <outlet property="label" destination="PHv-Fs-NBb" id="ed3-lW-rGW"/>
+                        <outlet property="slider" destination="UlN-VB-QTp" id="IEo-SI-pEp"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qgE-hx-h6L" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -109,12 +129,28 @@ etc.</string>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="84" id="2eN-qB-u0K">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" textLabel="4LP-SO-7kt" detailTextLabel="dDP-uD-j5F" rowHeight="84" style="IBUITableViewCellStyleSubtitle" id="2eN-qB-u0K">
                                         <rect key="frame" x="0.0" y="50" width="361" height="84"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="2eN-qB-u0K" id="DJ0-Lr-ll8">
                                             <rect key="frame" x="0.0" y="0.0" width="361" height="84"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="4LP-SO-7kt">
+                                                    <rect key="frame" x="20" y="25.999999999999996" width="25" height="14.333333333333334"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="0.0"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="dDP-uD-j5F">
+                                                    <rect key="frame" x="19.999999999999996" y="42.333333333333336" width="43.666666666666664" height="14.333333333333334"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="0.0"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </tableViewCell>

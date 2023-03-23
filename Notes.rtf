@@ -1,0 +1,41 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2639
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica-Bold;\f1\fnil\fcharset0 Menlo-Bold;}
+{\colortbl;\red255\green255\blue255;\red251\green2\blue7;\red0\green0\blue0;\red255\green255\blue255;
+\red102\green177\blue50;\red251\green2\blue7;}
+{\*\expandedcolortbl;;\cssrgb\c100000\c14913\c0;\csgenericrgb\c0\c0\c0;\csgenericrgb\c100000\c100000\c100000;
+\cssrgb\c46532\c73327\c25364;\cssrgb\c100000\c14913\c0;}
+{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\}.}{\leveltext\leveltemplateid1\'02\'00.;}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listname ;}\listid1}
+{\list\listtemplateid2\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\}.}{\leveltext\leveltemplateid101\'02\'00.;}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listname ;}\listid2}}
+{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}{\listoverride\listid2\listoverridecount0\ls2}}
+\margl1440\margr1440\vieww27080\viewh13460\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\b\fs48 \cf2 THESE ARE OUT OF ORDER!!\cf0 \
+\pard\tx220\tx720\tx741\pardeftab741\li720\fi-720\pardirnatural\partightenfactor0
+\ls1\ilvl0
+\f1\fs42 \cf3 \cb4 {\listtext	1.	}ViewModel: getWeatherReport(forAirport: KAUS)\
+{\listtext	2.	}This is after 1st guard statement - meaning 200 httpResponse\
+{\listtext	\cf2 3.	}Try saving to Core Data: LLL!\
+{\listtext	4.	}Success saving LLL! to Core Data\cf3 \
+{\listtext	5.	}This is after 2nd guard statement - meaning Conditions is not nil\
+\pard\tx720\tx741\pardeftab741\pardirnatural\partightenfactor0
+\cf3 \
+\
+\
+ViewModel: getWeatherReport(forAirport: \cf5 KAUS/\cf6 LLL\cf3 )\cf5  <\'97 WHAT WAS PASSED IN\
+\cf3 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs48 \cf6 \cb1 Need to check for local cache of text passed in\'85 do we have an Airport Entity with that abbreviation?\
+
+\f1\fs42 \cf3 \cb4 \
+\pard\tx720\tx741\pardeftab741\pardirnatural\partightenfactor0
+\cf3 FROM/AFTER API CALL:\
+\pard\tx220\tx720\tx741\pardeftab741\li720\fi-720\pardirnatural\partightenfactor0
+\ls2\ilvl0\cf3 {\listtext	1.	}This is after 1st guard statement - meaning 200 httpResponse \cf5 - WE HANDLE ERRORS (not valid)\cf3 \
+{\listtext	2.	}This is after 2nd guard statement - meaning Conditions is not nil \cf5 - WE HANDLE ERRORS (no conditions)\cf3 \
+{\listtext	3.	}Save to Core Data: KAUS \cf5 - SEEING AS HOW WE ALREADY CHECKED AND DIDN\'92T FIND IT LOCALLY\cf3 \
+{\listtext	4.	}Success saving KAUS to Core Data\
+\pard\tx720\tx741\pardeftab741\pardirnatural\partightenfactor0
+\cf3 \
+}

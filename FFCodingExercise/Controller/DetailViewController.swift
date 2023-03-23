@@ -25,10 +25,10 @@ class DetailViewController: UIViewController {
         // DetailVC airportAbbr: nil when view presented programmatically through viewModel as opposed to tableview
         //print("DetailVC airportAbbr: \(airportAbbr)")
         
-        latitudeLabel.text = response?.report.conditions.lat?.description
-        longitudeLabel.text = response?.report.conditions.lon?.description
-        tempLabel.text = response?.report.conditions.tempC?.description
-        dewPointLabel.text = response?.report.conditions.dewpointC?.description
-        pressureLabel.text = response?.report.conditions.pressureHg?.description
+        latitudeLabel.text = response?.report.conditions?.lat?.description
+        longitudeLabel.text = response?.report.conditions?.lon?.description
+        tempLabel.text = response?.report.conditions?.tempC?.description
+        dewPointLabel.text = response?.report.conditions?.dewpointC?.description
+        pressureLabel.text = response?.report.conditions?.pressureHg?.description
     }
 }

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreData
 
 protocol MyViewControllerDelegate {
     func receiveMsgFromViewModel(message: String)
@@ -15,7 +16,8 @@ protocol MyViewControllerDelegate {
 class ViewController: UIViewController, MyViewControllerDelegate {
     
     private let viewModel = WeatherViewModel()
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    var context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    
     
     // MARK: - UI
     @IBOutlet weak var searchTextField: UITextField!
@@ -35,6 +37,8 @@ class ViewController: UIViewController, MyViewControllerDelegate {
         tableView.delegate = self
         tableView.dataSource = self
         viewModel.delegate = self
+        
+        context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
         
         do {
             self.airports = try context.fetch(Airport.fetchRequest())
@@ -65,6 +69,8 @@ class ViewController: UIViewController, MyViewControllerDelegate {
     
     @IBAction func searchButtonPressed(_ sender: Any) {
         
+        print("DATE: \(Date.now)")
+        
         if searchTextField.text == "" || searchTextField.text == nil {
             showAlert(message: "Please enter an airport abbreviation.")
         } else {
@@ -83,9 +89,9 @@ class ViewController: UIViewController, MyViewControllerDelegate {
         navigationController?.pushViewController(vc, animated: true)
     }
     
-    private func getWeather(airport: String) async {
-        print("VC func getWeather was passed airport: \(airport)")
-    }
+//    private func getWeather(airport: String) async {
+//        print("VC func getWeather was passed airport: \(airport)")
+//    }
 }
 
 // MARK: - EXTENSIONS
@@ -112,15 +118,17 @@ extension ViewController: UITableViewDataSource {
         if self.airports?.count == 0 {
             
             cell.textLabel?.text = tempAirports[indexPath.row]
+            cell.detailTextLabel?.text = "Placeholder Date"
             
         }else{
             // Get airport from array and set the label
             let airport = self.airports![indexPath.row]
             cell.textLabel?.text = airport.abbreviation
+            cell.detailTextLabel?.text = airport.creationDate
         }
         
         cell.textLabel!.font = UIFont.systemFont(ofSize: 24)
-        
+                
         return cell
     }
 }

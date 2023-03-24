@@ -114,7 +114,7 @@ extension ViewController: UITableViewDataSource {
         if self.airports?.count == 0 {
             
             cell.textLabel?.text = tempAirports[indexPath.row]
-            cell.detailTextLabel?.text = "Placeholder Date"
+            cell.detailTextLabel?.text = Date.now.description
             
         }else{
 

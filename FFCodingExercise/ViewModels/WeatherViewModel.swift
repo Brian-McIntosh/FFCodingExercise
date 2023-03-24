@@ -42,6 +42,8 @@ class WeatherViewModel: WeatherViewModelDelegate {
     func getWeatherReport(forAirport: String) {
         print("ViewModel: getWeatherReport(forAirport: \(forAirport))")
         
+        var isAirportExpired: Bool = true
+        
         // Create the FetchRequest to get all Airports
         let fetchRequest = NSFetchRequest<Airport>(entityName: "Airport")
         
@@ -54,6 +56,22 @@ class WeatherViewModel: WeatherViewModelDelegate {
             
             print("Found \(fetchedAirports.count) Airport(s) matching \(forAirport) in your local cache.")
             //-------------------------- should be 0 or 1
+            
+            if fetchedAirports.count != 0 {
+                
+                // TODO: Get the airports creation date from core data
+                
+                // TODO: Calculate minutes diff between Now and creation date
+                
+                // TODO: Get the slider value from storage
+                
+                // TODO: Is minutes diff > or < slider value from storage?
+                
+                // TODO: This gives you 'isAirportExpired' value
+                
+                // TODO: Then, you can guard against 'isAirportExpired'
+                
+            }
 
             guard fetchedAirports.count == 0 else {
 //                print("::: Oops, fetchedAirports.count does not equal 0!")

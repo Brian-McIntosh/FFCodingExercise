@@ -9,26 +9,28 @@ import UIKit
 
 class DetailViewController: UIViewController {
     
-    // MARK: - UI
+    // MARK: - UI OUTLETS
     @IBOutlet weak var latitudeLabel: UILabel!
     @IBOutlet weak var longitudeLabel: UILabel!
     @IBOutlet weak var tempLabel: UILabel!
     @IBOutlet weak var dewPointLabel: UILabel!
     @IBOutlet weak var pressureLabel: UILabel!
     
-    //var airportAbbr: String?
+    // MARK: - PROPERTIES
     var response: Response?
+    var conditions: CachedConditions?
 
+    // MARK: - LIFECYCLE
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // DetailVC airportAbbr: nil when view presented programmatically through viewModel as opposed to tableview
         //print("DetailVC airportAbbr: \(airportAbbr)")
         
-        latitudeLabel.text = response?.report.conditions?.lat?.description
-        longitudeLabel.text = response?.report.conditions?.lon?.description
-        tempLabel.text = response?.report.conditions?.tempC?.description
-        dewPointLabel.text = response?.report.conditions?.dewpointC?.description
-        pressureLabel.text = response?.report.conditions?.pressureHg?.description
+        latitudeLabel.text = conditions?.lat.description
+        longitudeLabel.text = conditions?.lon.description
+        tempLabel.text = conditions?.tempC.description
+        dewPointLabel.text = conditions?.dewpointC.description
+        pressureLabel.text = conditions?.pressureHg.description
     }
 }

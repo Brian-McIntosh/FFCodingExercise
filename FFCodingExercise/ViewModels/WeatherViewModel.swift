@@ -9,11 +9,19 @@ import Foundation
 import UIKit
 import CoreData
 
+// TODO: Refactor to use WebService:
+/*
+     func populateWeather(url: URL) async {
+         let weatherReport = try await Webservice().getWeather(url: url)
+     }
+ */
+
 protocol WeatherViewModelDelegate {
     func sendMsgToView(message: String)
     func tellViewToShowDetail(response: Response)
+    func tellViewToShowDetail(conditions: CachedConditions)
 }
-
+    
 class WeatherViewModel: WeatherViewModelDelegate {
     
     var delegate: MyViewControllerDelegate?
@@ -27,19 +35,10 @@ class WeatherViewModel: WeatherViewModelDelegate {
         delegate?.navToDetailVC(response: response)
     }
     
-    func getFromLocalCache() {
-        
-        print("ViewModel: Get from local cache instead!! Yeah!")
-        /*
-         Pass a response back!!
-         DispatchQueue.main.async {
-             self.tellViewToShowDetail(response: response)
-         }
-         */
+    func tellViewToShowDetail(conditions: CachedConditions) {
+        delegate?.navToDetailVC(conditions: conditions)
     }
     
-    
-
     func getWeatherReport(forAirport: String) {
         print("ViewModel: getWeatherReport(forAirport: \(forAirport))")
         
@@ -61,22 +60,16 @@ class WeatherViewModel: WeatherViewModelDelegate {
                 print("::: meaning, we have something in Core Data")
                 print("::: Note: you won't see any more Networking msgs after this due to return")
                 
-                /*
-                 DON'T need all this ^ here b/c we already have the object to pass back!!
-                DispatchQueue.main.async {
-                    self.sendMsgToView(message: "Try getting from cache as opposed to from API call with URLSession.")
-                }
-                let test = fetchedAirports.first
-                print("object from CoreData has abbreviation of: \(String(describing: test?.abbreviation))")
-                 */
-                
-                // DON"T even need this:
-                // getFromLocalCache()
-                
-                print("::: Fetched Airport: \(fetchedAirports.first?.abbreviation)")
-                print("::: Fetched Airport: \(fetchedAirports.first?.creationDate)")
-                print("::: Fetched Airport: \(fetchedAirports.first?.conditions?.lon)")
-                
+                 //Pass a Response? back to DetailViewController
+                 DispatchQueue.main.async {
+                     self.tellViewToShowDetail(conditions: fetchedAirports.first!.conditions!)
+                 }
+                 
+//                print("::: Fetched Airport: \(fetchedAirports.first?.abbreviation)")
+//                print("::: Fetched Airport: \(fetchedAirports.first?.creationDate)")
+//                print("::: Fetched Airport: \(fetchedAirports.first?.conditions?.lat)")
+//                print("::: Fetched Airport: \(fetchedAirports.first?.conditions?.lon)")
+//                print("::: Fetched Airport: \(fetchedAirports.first?.conditions?.ident)")
                 
                 return
             }
@@ -144,9 +137,9 @@ class WeatherViewModel: WeatherViewModelDelegate {
                 
                 
                 // This passes response object to DetailViewController
-                DispatchQueue.main.async {
-                    self.tellViewToShowDetail(response: response)
-                }
+//                DispatchQueue.main.async {
+//                    self.tellViewToShowDetail(response: response)
+//                }
                 
             } else {
                 DispatchQueue.main.async {
@@ -172,9 +165,15 @@ class WeatherViewModel: WeatherViewModelDelegate {
         newConditions.dewpointC = response.report.conditions?.dewpointC ?? 0.0
         newConditions.pressureHg = response.report.conditions?.pressureHg ?? 0.0
         
-        //newConditions.airport = newAirport
+        //newConditions.airport = newAirport <-- seems not to work :(
+        newAirport.conditions = newConditions //<-- seems to work :)
         
-        newAirport.conditions = newConditions
+        DispatchQueue.main.async {
+            self.tellViewToShowDetail(conditions: newConditions)
+        }
+        
+        // TODO: SAVE SOME FORECAST DATA SO YOU CAN TRY SWITCHING VIEWS
+        
 
         // Save to Core Data
         do {
@@ -186,19 +185,8 @@ class WeatherViewModel: WeatherViewModelDelegate {
         }
     }
     
-    func updateCache(with decodedResponse: Response) {
-        
-    }
-    
-    func populateWeather(url: URL) async {
-        
-    }
-    
-//    func populateWeather(url: URL) async {
-//        do {
-//            let weatherReport = try await Webservice().getWeather(url: url)
-//        }catch{
-//            print(error)
-//        }
+    // FROM SWIFTUI PROJECT:
+//    func updateCache(with decodedResponse: Response) {
+//
 //    }
 }

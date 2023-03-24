@@ -11,26 +11,36 @@ import CoreData
 protocol MyViewControllerDelegate {
     func receiveMsgFromViewModel(message: String)
     func navToDetailVC(response: Response)
+    func navToDetailVC(conditions: CachedConditions)
 }
 
 class ViewController: UIViewController, MyViewControllerDelegate {
     
-    private let viewModel = WeatherViewModel()
-    var context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-    
-    
-    // MARK: - UI
-    @IBOutlet weak var searchTextField: UITextField!
-    @IBOutlet weak var searchButton: UIButton!
-    @IBOutlet weak var tableView: UITableView!
-    
-    // MARK: - DATA
+    // MARK: - DATA for Display
     var airports: [Airport]?
     var tempAirports = ["KPWM", "KAUS"]
     
+    // MARK: - PROPERTIES
+    private let viewModel = WeatherViewModel()
+    var context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    
+    // MARK: - IBOUTLETS & ACTIONS
+    @IBOutlet weak var searchTextField: UITextField!
+    @IBOutlet weak var searchButton: UIButton!
+    @IBOutlet weak var tableView: UITableView!
+    @IBAction func searchButtonPressed(_ sender: Any) {
+        if searchTextField.text == "" || searchTextField.text == nil {
+            showAlert(message: "Please enter an airport abbreviation.")
+        } else {
+            viewModel.getWeatherReport(forAirport: searchTextField.text!)
+        }
+    }
+    
+    // MARK: - LIFECYCLE
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.navigationBar.setNeedsLayout()
+        context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
         
         // MARK: - DELEGATES
         searchTextField.delegate = self
@@ -38,28 +48,25 @@ class ViewController: UIViewController, MyViewControllerDelegate {
         tableView.dataSource = self
         viewModel.delegate = self
         
-        context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
-        
         do {
             self.airports = try context.fetch(Airport.fetchRequest())
         } catch {
-            showAlert(message: "Catch error when fetching from Core Data")
+            showAlert(message: "Error in ViewController when trying to fetch Airport entities from Core Data.")
         }
     }
-    
     override func viewWillAppear(_ animated: Bool) {
         do {
             self.airports = try context.fetch(Airport.fetchRequest())
         } catch {
-            showAlert(message: "Catch error when fetching from Core Data")
+            showAlert(message: "Error in ViewController when trying to fetch Airport entities from Core Data.")
         }
         tableView.reloadData()
     }
     
+    // MARK: - ALERT HANDLING
     func receiveMsgFromViewModel(message: String) {
         showAlert(message: message)
     }
-    
     func showAlert(message: String) {
         let alert = UIAlertController(title: "", message: message, preferredStyle: .alert)
         let ok = UIAlertAction(title: "OK", style: .default, handler: { (action) -> Void in })
@@ -67,31 +74,19 @@ class ViewController: UIViewController, MyViewControllerDelegate {
         self.present(alert, animated: true, completion: nil)
     }
     
-    @IBAction func searchButtonPressed(_ sender: Any) {
-        
-        //print("DATE: \(Date.now)")
-        
-        if searchTextField.text == "" || searchTextField.text == nil {
-            showAlert(message: "Please enter an airport abbreviation.")
-        } else {
-            viewModel.getWeatherReport(forAirport: searchTextField.text!)
-//            Task {
-//                await getWeather(airport: searchTextField.text!)
-//            }
-//            searchTextField.resignFirstResponder()
-        }
-    }
-    
+    // MARK: - NAVIGATION
     func navToDetailVC(response: Response) {
         let vc = storyboard?.instantiateViewController(identifier: "DetailViewController") as! DetailViewController
         vc.title = "Weather Conditions"
         vc.response = response
         navigationController?.pushViewController(vc, animated: true)
     }
-    
-//    private func getWeather(airport: String) async {
-//        print("VC func getWeather was passed airport: \(airport)")
-//    }
+    func navToDetailVC(conditions: CachedConditions) {
+        let vc = storyboard?.instantiateViewController(identifier: "DetailViewController") as! DetailViewController
+        vc.title = "Weather Conditions"
+        vc.conditions = conditions
+        navigationController?.pushViewController(vc, animated: true)
+    }
 }
 
 // MARK: - EXTENSIONS
@@ -113,6 +108,7 @@ extension ViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         
         if self.airports?.count == 0 {
@@ -121,7 +117,7 @@ extension ViewController: UITableViewDataSource {
             cell.detailTextLabel?.text = "Placeholder Date"
             
         }else{
-            // Get airport from array and set the label
+
             let airport = self.airports![indexPath.row]
             cell.textLabel?.text = airport.abbreviation
             cell.detailTextLabel?.text = airport.creationDate?.description

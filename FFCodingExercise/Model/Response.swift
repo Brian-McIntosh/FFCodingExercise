@@ -13,7 +13,7 @@ struct Response: Codable {
 
 struct Report: Codable {
     let conditions: Conditions?
-    let forecast: Forecast
+    let forecast: Forecast?
 }
 
 struct Forecast: Codable {

@@ -56,20 +56,54 @@ class WeatherViewModel: WeatherViewModelDelegate {
             //-------------------------- should be 0 or 1
 
             guard fetchedAirports.count == 0 else {
-                print("::: Oops, fetchedAirports.count does not equal 0!")
-                print("::: meaning, we have something in Core Data")
-                print("::: Note: you won't see any more Networking msgs after this due to return")
+//                print("::: Oops, fetchedAirports.count does not equal 0!")
+//                print("::: meaning, we have something in Core Data")
+//                print("::: Note: you won't see any more Networking msgs after this due to return")
                 
-                 //Pass a Response? back to DetailViewController
-                 DispatchQueue.main.async {
-                     self.tellViewToShowDetail(conditions: fetchedAirports.first!.conditions!)
-                 }
+                //Pass a Response? back to DetailViewController
+                DispatchQueue.main.async {
+                    self.tellViewToShowDetail(conditions: fetchedAirports.first!.conditions!)
+                }
                  
-//                print("::: Fetched Airport: \(fetchedAirports.first?.abbreviation)")
-//                print("::: Fetched Airport: \(fetchedAirports.first?.creationDate)")
-//                print("::: Fetched Airport: \(fetchedAirports.first?.conditions?.lat)")
-//                print("::: Fetched Airport: \(fetchedAirports.first?.conditions?.lon)")
-//                print("::: Fetched Airport: \(fetchedAirports.first?.conditions?.ident)")
+//                print(":::::: Fetched Airport Abbreviation: \(fetchedAirports.first?.abbreviation)")
+//                print(":::::: Fetched Airport Creation Date: \(fetchedAirports.first?.creationDate)")
+//                print(":::::: Fetched Conditions Lat: \(fetchedAirports.first?.conditions?.lat)")
+//                print(":::::: Fetched Conditions Lon: \(fetchedAirports.first?.conditions?.lon)")
+                //print(":::::: Fetched Airport: \(fetchedAirports.first?.conditions?.ident)")
+                
+                
+/////////////////////////// TODO: time stuff
+                
+                
+                let dateFormatter = DateFormatter()
+                //dateFormatter.dateFormat = "yyyy/MM/dd HH:mm" <-- FROM EXAMPLE
+                dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ssZ"
+                
+                let airportCreationDate = dateFormatter.date(from: (fetchedAirports.first?.creationDate)!)
+                //let diwali = dateFormatter.date(from: "2023/03/24 18:30") <-- FROM EXAMPLE
+                //let newYear = dateFormatter.date(from: "2023/01/01 00:00") <-- FROM EXAMPLE
+
+                let diffinSeconds = Date.now.timeIntervalSinceReferenceDate - airportCreationDate!.timeIntervalSinceReferenceDate
+
+                //print(":::::: Diff in Seconds: \(diffinSeconds)")
+                print(":::::: Diff between Now and Airport creation date (in Minutes): \(diffinSeconds/60)")
+                
+                let defaults = UserDefaults.standard
+                let savedSliderValue = defaults.integer(forKey: "SliderValue")
+                
+                let diffInMin = diffinSeconds/60
+                
+                if Int(diffInMin) < savedSliderValue {
+                    print(":::::: Diff is LESS than saved value in UserDefaults")
+                    print(":::::: USE CACHED VALUE, Don't get from Network Call")
+                }
+                else{
+                    print(":::::: Diff is MORE than saved value in UserDefaults")
+                    print(":::::: EXPIRED, call the Network API")
+                }
+                
+/////////////////////////// TODO: time stuff
+                
                 
                 return
             }
@@ -153,11 +187,11 @@ class WeatherViewModel: WeatherViewModelDelegate {
     func saveAirportToCoreData(airportAbbreviation: String, response: Response) {
         print("Try saving to Core Data: \(airportAbbreviation)")
         
-        var newAirport = Airport(context: self.context)
+        let newAirport = Airport(context: self.context)
         newAirport.abbreviation = airportAbbreviation
-        newAirport.creationDate = "some date"
+        newAirport.creationDate = Date.now.description
         
-        var newConditions = CachedConditions(context: self.context)
+        let newConditions = CachedConditions(context: self.context)
         newConditions.ident = response.report.conditions?.ident
         newConditions.lat = response.report.conditions?.lat ?? 0.0
         newConditions.lon = response.report.conditions?.lon ?? 0.0

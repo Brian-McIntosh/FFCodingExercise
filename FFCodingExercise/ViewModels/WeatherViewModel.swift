@@ -59,13 +59,30 @@ class WeatherViewModel: WeatherViewModelDelegate {
             
             if fetchedAirports.count != 0 {
                 
-                // TODO: Get the airports creation date from core data
+                // TODO: Create DateFormatter
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ssZ"
                 
-                // TODO: Calculate minutes diff between Now and creation date
+                // TODO: Get the airports creation date from CoreData
+                let airportCreationDate = dateFormatter.date(from: (fetchedAirports.first?.creationDate)!)
                 
-                // TODO: Get the slider value from storage
+                // TODO: Calculate Seconds difference between Now and creation date
+                let diffInSeconds = Date.now.timeIntervalSinceReferenceDate - airportCreationDate!.timeIntervalSinceReferenceDate
+                let diffInMinutes = diffInSeconds/60
+                
+                // TODO: Get the saved slider value from UserDefaults
+                let defaults = UserDefaults.standard
+                let savedSliderValue = defaults.integer(forKey: "SliderValue")
                 
                 // TODO: Is minutes diff > or < slider value from storage?
+                if Int(diffInMinutes) < savedSliderValue {
+                    print(":::::: Diff is LESS than saved value in UserDefaults")
+                    print(":::::: USE CACHED VALUE, Don't get from Network Call")
+                }
+                else{
+                    print(":::::: Diff is MORE than saved value in UserDefaults")
+                    print(":::::: EXPIRED, call the Network API")
+                }
                 
                 // TODO: This gives you 'isAirportExpired' value
                 
@@ -90,37 +107,37 @@ class WeatherViewModel: WeatherViewModelDelegate {
                 //print(":::::: Fetched Airport: \(fetchedAirports.first?.conditions?.ident)")
                 
                 
-/////////////////////////// TODO: time stuff
-                
-                
-                let dateFormatter = DateFormatter()
-                //dateFormatter.dateFormat = "yyyy/MM/dd HH:mm" <-- FROM EXAMPLE
-                dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ssZ"
-                
-                let airportCreationDate = dateFormatter.date(from: (fetchedAirports.first?.creationDate)!)
-                //let diwali = dateFormatter.date(from: "2023/03/24 18:30") <-- FROM EXAMPLE
-                //let newYear = dateFormatter.date(from: "2023/01/01 00:00") <-- FROM EXAMPLE
-
-                let diffinSeconds = Date.now.timeIntervalSinceReferenceDate - airportCreationDate!.timeIntervalSinceReferenceDate
-
-                //print(":::::: Diff in Seconds: \(diffinSeconds)")
-                print(":::::: Diff between Now and Airport creation date (in Minutes): \(diffinSeconds/60)")
-                
-                let defaults = UserDefaults.standard
-                let savedSliderValue = defaults.integer(forKey: "SliderValue")
-                
-                let diffInMin = diffinSeconds/60
-                
-                if Int(diffInMin) < savedSliderValue {
-                    print(":::::: Diff is LESS than saved value in UserDefaults")
-                    print(":::::: USE CACHED VALUE, Don't get from Network Call")
-                }
-                else{
-                    print(":::::: Diff is MORE than saved value in UserDefaults")
-                    print(":::::: EXPIRED, call the Network API")
-                }
-                
-/////////////////////////// TODO: time stuff
+///////////////////////////// Time Experimentation Stuff
+//                
+//                
+//                let dateFormatter = DateFormatter()
+//                //dateFormatter.dateFormat = "yyyy/MM/dd HH:mm" <-- FROM EXAMPLE
+//                dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ssZ"
+//                
+//                let airportCreationDate = dateFormatter.date(from: (fetchedAirports.first?.creationDate)!)
+//                //let diwali = dateFormatter.date(from: "2023/03/24 18:30") <-- FROM EXAMPLE
+//                //let newYear = dateFormatter.date(from: "2023/01/01 00:00") <-- FROM EXAMPLE
+//
+//                let diffinSeconds = Date.now.timeIntervalSinceReferenceDate - airportCreationDate!.timeIntervalSinceReferenceDate
+//
+//                //print(":::::: Diff in Seconds: \(diffinSeconds)")
+//                print(":::::: Diff between Now and Airport creation date (in Minutes): \(diffinSeconds/60)")
+//                
+//                let defaults = UserDefaults.standard
+//                let savedSliderValue = defaults.integer(forKey: "SliderValue")
+//                
+//                let diffInMin = diffinSeconds/60
+//                
+//                if Int(diffInMin) < savedSliderValue {
+//                    print(":::::: Diff is LESS than saved value in UserDefaults")
+//                    print(":::::: USE CACHED VALUE, Don't get from Network Call")
+//                }
+//                else{
+//                    print(":::::: Diff is MORE than saved value in UserDefaults")
+//                    print(":::::: EXPIRED, call the Network API")
+//                }
+//                
+///////////////////////////// Time Experimentation Stuff
                 
                 
                 return

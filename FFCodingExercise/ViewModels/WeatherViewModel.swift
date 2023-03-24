@@ -78,10 +78,12 @@ class WeatherViewModel: WeatherViewModelDelegate {
                 if Int(diffInMinutes) < savedSliderValue {
                     print(":::::: Diff is LESS than saved value in UserDefaults")
                     print(":::::: USE CACHED VALUE, Don't get from Network Call")
+                    isAirportExpired = false
                 }
                 else{
                     print(":::::: Diff is MORE than saved value in UserDefaults")
                     print(":::::: EXPIRED, call the Network API")
+                    isAirportExpired = true
                 }
                 
                 // TODO: This gives you 'isAirportExpired' value
@@ -90,7 +92,10 @@ class WeatherViewModel: WeatherViewModelDelegate {
                 
             }
 
-            guard fetchedAirports.count == 0 else {
+            //guard fetchedAirports.count == 0 else {
+            
+            guard isAirportExpired == true else {
+                
 //                print("::: Oops, fetchedAirports.count does not equal 0!")
 //                print("::: meaning, we have something in Core Data")
 //                print("::: Note: you won't see any more Networking msgs after this due to return")
@@ -108,12 +113,12 @@ class WeatherViewModel: WeatherViewModelDelegate {
                 
                 
 ///////////////////////////// Time Experimentation Stuff
-//                
-//                
+//
+//
 //                let dateFormatter = DateFormatter()
 //                //dateFormatter.dateFormat = "yyyy/MM/dd HH:mm" <-- FROM EXAMPLE
 //                dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ssZ"
-//                
+//
 //                let airportCreationDate = dateFormatter.date(from: (fetchedAirports.first?.creationDate)!)
 //                //let diwali = dateFormatter.date(from: "2023/03/24 18:30") <-- FROM EXAMPLE
 //                //let newYear = dateFormatter.date(from: "2023/01/01 00:00") <-- FROM EXAMPLE
@@ -122,12 +127,12 @@ class WeatherViewModel: WeatherViewModelDelegate {
 //
 //                //print(":::::: Diff in Seconds: \(diffinSeconds)")
 //                print(":::::: Diff between Now and Airport creation date (in Minutes): \(diffinSeconds/60)")
-//                
+//
 //                let defaults = UserDefaults.standard
 //                let savedSliderValue = defaults.integer(forKey: "SliderValue")
-//                
+//
 //                let diffInMin = diffinSeconds/60
-//                
+//
 //                if Int(diffInMin) < savedSliderValue {
 //                    print(":::::: Diff is LESS than saved value in UserDefaults")
 //                    print(":::::: USE CACHED VALUE, Don't get from Network Call")
@@ -136,7 +141,7 @@ class WeatherViewModel: WeatherViewModelDelegate {
 //                    print(":::::: Diff is MORE than saved value in UserDefaults")
 //                    print(":::::: EXPIRED, call the Network API")
 //                }
-//                
+//
 ///////////////////////////// Time Experimentation Stuff
                 
                 

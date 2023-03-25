@@ -10,10 +10,6 @@ import UIKit
 class DetailViewController: UIViewController {
     
     // MARK: - UI OUTLETS
-    
-    
-    
-    
     @IBOutlet weak var conditionsView: UIView!
     @IBOutlet weak var latitudeLabel: UILabel!
     @IBOutlet weak var longitudeLabel: UILabel!
@@ -21,8 +17,7 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var dewPointLabel: UILabel!
     @IBOutlet weak var pressureLabel: UILabel!
     @IBOutlet weak var foreCastView: UIView!
-    
-    
+    @IBOutlet weak var forecastData: UILabel!
     
     // MARK: - PROPERTIES
     var response: Response?

@@ -253,6 +253,40 @@ etc.</string>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TxH-rH-FH2">
+                                <rect key="frame" x="16" y="589" width="361" height="89"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Forecast Data" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ncc-0y-W8C">
+                                        <rect key="frame" x="0.0" y="8" width="361" height="21"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="21" id="Yam-jk-cz9"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemCyanColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="361" id="16K-cn-ldp"/>
+                                    <constraint firstAttribute="trailing" secondItem="Ncc-0y-W8C" secondAttribute="trailing" id="4Kb-xh-FIi"/>
+                                    <constraint firstItem="Ncc-0y-W8C" firstAttribute="leading" secondItem="TxH-rH-FH2" secondAttribute="leading" id="SGB-9O-QWk"/>
+                                    <constraint firstAttribute="height" constant="89" id="XKU-JN-Afc"/>
+                                    <constraint firstItem="Ncc-0y-W8C" firstAttribute="top" secondItem="TxH-rH-FH2" secondAttribute="top" constant="8" id="qHQ-0v-Pdf"/>
+                                </constraints>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n5A-BR-hLY">
+                                <rect key="frame" x="84" y="693" width="224" height="35"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="35" id="rR6-Kk-Vm8"/>
+                                    <constraint firstAttribute="width" constant="224" id="vRT-44-Ajk"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="filled" title="Toggle Conditions/Forecast"/>
+                                <connections>
+                                    <action selector="toggleButtonPressed:" destination="azE-Ws-0Qy" eventType="touchUpInside" id="7aC-xU-439"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="M2l-sD-siT"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -264,9 +298,11 @@ etc.</string>
                             <constraint firstItem="oAi-fn-Map" firstAttribute="trailing" secondItem="Ubu-Xq-2Xz" secondAttribute="trailing" id="6Xz-FA-4Bv"/>
                             <constraint firstItem="kpJ-2q-jsu" firstAttribute="leading" secondItem="xNK-G0-mJ2" secondAttribute="leading" id="BgV-07-Yp3"/>
                             <constraint firstItem="hp6-vu-egC" firstAttribute="top" secondItem="M2l-sD-siT" secondAttribute="top" constant="52" id="C2w-qX-8XH"/>
+                            <constraint firstItem="TxH-rH-FH2" firstAttribute="top" secondItem="bRw-U7-IXX" secondAttribute="bottom" constant="35.329999999999998" id="EBe-Pd-prH"/>
                             <constraint firstItem="ktf-cu-Yaq" firstAttribute="leading" secondItem="35u-6d-t1L" secondAttribute="leading" id="Fgl-M9-vR7"/>
                             <constraint firstItem="kpJ-2q-jsu" firstAttribute="top" secondItem="35u-6d-t1L" secondAttribute="bottom" constant="8" symbolic="YES" id="H8Z-PT-3Pf"/>
                             <constraint firstItem="xNK-G0-mJ2" firstAttribute="trailing" secondItem="bRw-U7-IXX" secondAttribute="trailing" id="IRi-A1-eyk"/>
+                            <constraint firstItem="TxH-rH-FH2" firstAttribute="leading" secondItem="M2l-sD-siT" secondAttribute="leading" constant="16" id="KCl-Es-4Co"/>
                             <constraint firstItem="hp6-vu-egC" firstAttribute="leading" secondItem="oAi-fn-Map" secondAttribute="leading" id="KE7-wD-noO"/>
                             <constraint firstItem="hp6-vu-egC" firstAttribute="trailing" secondItem="oAi-fn-Map" secondAttribute="trailing" id="KMG-zF-Nhu"/>
                             <constraint firstItem="bRw-U7-IXX" firstAttribute="top" secondItem="xNK-G0-mJ2" secondAttribute="bottom" constant="9" id="MZ6-Cw-Ga5"/>
@@ -274,15 +310,19 @@ etc.</string>
                             <constraint firstItem="Ubu-Xq-2Xz" firstAttribute="leading" secondItem="mT6-ZM-MYT" secondAttribute="leading" id="TKC-dT-HfG"/>
                             <constraint firstItem="hp6-vu-egC" firstAttribute="leading" secondItem="csx-00-q2A" secondAttribute="leadingMargin" id="Ugx-A4-zGz"/>
                             <constraint firstItem="mT6-ZM-MYT" firstAttribute="trailing" secondItem="Lhs-BH-Icw" secondAttribute="trailing" id="bC9-0L-qBV"/>
+                            <constraint firstItem="n5A-BR-hLY" firstAttribute="leading" secondItem="M2l-sD-siT" secondAttribute="leading" constant="84" id="bWa-Gj-lfL"/>
                             <constraint firstItem="oAi-fn-Map" firstAttribute="leading" secondItem="Ubu-Xq-2Xz" secondAttribute="leading" id="bcF-Dp-0UN"/>
+                            <constraint firstItem="n5A-BR-hLY" firstAttribute="top" secondItem="TxH-rH-FH2" secondAttribute="bottom" constant="15" id="bhR-Ep-2lu"/>
                             <constraint firstItem="Lhs-BH-Icw" firstAttribute="trailing" secondItem="ktf-cu-Yaq" secondAttribute="trailing" id="f8h-tX-Z7O"/>
                             <constraint firstItem="ktf-cu-Yaq" firstAttribute="top" secondItem="Lhs-BH-Icw" secondAttribute="bottom" constant="8" symbolic="YES" id="hLm-qp-kOU"/>
                             <constraint firstItem="35u-6d-t1L" firstAttribute="top" secondItem="ktf-cu-Yaq" secondAttribute="bottom" constant="39" id="hXQ-mf-VtG"/>
                             <constraint firstItem="xNK-G0-mJ2" firstAttribute="top" secondItem="kpJ-2q-jsu" secondAttribute="bottom" constant="42" id="iQB-pT-Eae"/>
                             <constraint firstItem="mT6-ZM-MYT" firstAttribute="leading" secondItem="Lhs-BH-Icw" secondAttribute="leading" id="izs-Wy-2xx"/>
+                            <constraint firstItem="M2l-sD-siT" firstAttribute="trailing" secondItem="TxH-rH-FH2" secondAttribute="trailing" constant="16" id="lu5-Wx-SHH"/>
                             <constraint firstItem="35u-6d-t1L" firstAttribute="leading" secondItem="kpJ-2q-jsu" secondAttribute="leading" id="ngI-0L-DVp"/>
                             <constraint firstItem="Ubu-Xq-2Xz" firstAttribute="trailing" secondItem="mT6-ZM-MYT" secondAttribute="trailing" id="otj-hH-8cN"/>
                             <constraint firstItem="hp6-vu-egC" firstAttribute="trailing" secondItem="csx-00-q2A" secondAttribute="trailingMargin" id="q1y-Ww-If2"/>
+                            <constraint firstItem="M2l-sD-siT" firstAttribute="trailing" secondItem="n5A-BR-hLY" secondAttribute="trailing" constant="85" id="qEs-Gm-IyS"/>
                             <constraint firstItem="Lhs-BH-Icw" firstAttribute="top" secondItem="mT6-ZM-MYT" secondAttribute="bottom" constant="36" id="qVd-hf-lGl"/>
                             <constraint firstItem="kpJ-2q-jsu" firstAttribute="trailing" secondItem="xNK-G0-mJ2" secondAttribute="trailing" id="r4l-jd-Re4"/>
                             <constraint firstItem="Ubu-Xq-2Xz" firstAttribute="top" secondItem="oAi-fn-Map" secondAttribute="bottom" constant="32" id="vIQ-Go-5yq"/>
@@ -291,6 +331,7 @@ etc.</string>
                     </view>
                     <connections>
                         <outlet property="dewPointLabel" destination="kpJ-2q-jsu" id="2Ys-vN-nYx"/>
+                        <outlet property="foreCastView" destination="TxH-rH-FH2" id="hYF-Fn-bgX"/>
                         <outlet property="latitudeLabel" destination="oAi-fn-Map" id="joS-hU-YJh"/>
                         <outlet property="longitudeLabel" destination="mT6-ZM-MYT" id="RJ2-zT-uM4"/>
                         <outlet property="pressureLabel" destination="bRw-U7-IXX" id="wQ6-Bw-JHm"/>
@@ -350,6 +391,9 @@ etc.</string>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemCyanColor">
+            <color red="0.19607843137254902" green="0.67843137254901964" blue="0.90196078431372551" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGrayColor">
             <color red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

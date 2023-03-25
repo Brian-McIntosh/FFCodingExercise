@@ -28,6 +28,7 @@ class DetailViewController: UIViewController {
     // MARK: - LIFECYCLE
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.title = airport?.abbreviation
         foreCastView.isHidden = true
         forecastData.text = "temp"
         

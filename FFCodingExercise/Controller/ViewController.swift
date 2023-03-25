@@ -78,19 +78,19 @@ class ViewController: UIViewController, MyViewControllerDelegate {
     // MARK: - NAVIGATION
     func navToDetailVC(response: Response) {
         let vc = storyboard?.instantiateViewController(identifier: "DetailViewController") as! DetailViewController
-        vc.title = "Weather Conditions"
+        //vc.title = "Weather Conditions"
         vc.response = response
         navigationController?.pushViewController(vc, animated: true)
     }
     func navToDetailVC(conditions: CachedConditions) {
         let vc = storyboard?.instantiateViewController(identifier: "DetailViewController") as! DetailViewController
-        vc.title = "Weather Conditions"
+        //vc.title = "Weather Conditions"
         vc.conditions = conditions
         navigationController?.pushViewController(vc, animated: true)
     }
     func navToDetailVC(airport: Airport) {
         let vc = storyboard?.instantiateViewController(identifier: "DetailViewController") as! DetailViewController
-        vc.title = "Weather Conditions"
+        //vc.title = "Weather Conditions"
         vc.airport = airport
         navigationController?.pushViewController(vc, animated: true)
     }

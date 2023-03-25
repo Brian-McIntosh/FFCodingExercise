@@ -10,12 +10,19 @@ import UIKit
 class DetailViewController: UIViewController {
     
     // MARK: - UI OUTLETS
+    
+    
+    
+    
+    @IBOutlet weak var conditionsView: UIView!
     @IBOutlet weak var latitudeLabel: UILabel!
     @IBOutlet weak var longitudeLabel: UILabel!
     @IBOutlet weak var tempLabel: UILabel!
     @IBOutlet weak var dewPointLabel: UILabel!
     @IBOutlet weak var pressureLabel: UILabel!
     @IBOutlet weak var foreCastView: UIView!
+    
+    
     
     // MARK: - PROPERTIES
     var response: Response?
@@ -25,6 +32,7 @@ class DetailViewController: UIViewController {
     // MARK: - LIFECYCLE
     override func viewDidLoad() {
         super.viewDidLoad()
+
         foreCastView.isHidden = true
         // DetailVC airportAbbr: nil when view presented programmatically through viewModel as opposed to tableview
         //print("DetailVC airportAbbr: \(airportAbbr)")
@@ -40,9 +48,11 @@ class DetailViewController: UIViewController {
     
     @IBAction func toggleButtonPressed(_ sender: Any) {
         if isForecastShowing == false {
+            conditionsView.isHidden = true
             foreCastView.isHidden = false
             isForecastShowing = true
         }else{
+            conditionsView.isHidden = false
             foreCastView.isHidden = true
             isForecastShowing = false
         }

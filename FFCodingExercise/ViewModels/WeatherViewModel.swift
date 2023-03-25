@@ -20,6 +20,7 @@ protocol WeatherViewModelDelegate {
     func sendMsgToView(message: String)
     func tellViewToShowDetail(response: Response)
     func tellViewToShowDetail(conditions: CachedConditions)
+    func tellViewToShowDetail(airport: Airport)
 }
     
 class WeatherViewModel: WeatherViewModelDelegate {
@@ -27,17 +28,22 @@ class WeatherViewModel: WeatherViewModelDelegate {
     var delegate: MyViewControllerDelegate?
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
-    func sendMsgToView(message: String) {
-        delegate?.receiveMsgFromViewModel(message: message)
+    // Communicate Back to ViewController
+        func sendMsgToView(message: String) {
+            delegate?.receiveMsgFromViewModel(message: message)
+        }
+        
+        func tellViewToShowDetail(response: Response) {
+            delegate?.navToDetailVC(response: response)
+        }
+        
+        func tellViewToShowDetail(conditions: CachedConditions) {
+            delegate?.navToDetailVC(conditions: conditions)
+        }
+    func tellViewToShowDetail(airport: Airport) {
+        delegate?.navToDetailVC(airport: airport)
     }
-    
-    func tellViewToShowDetail(response: Response) {
-        delegate?.navToDetailVC(response: response)
-    }
-    
-    func tellViewToShowDetail(conditions: CachedConditions) {
-        delegate?.navToDetailVC(conditions: conditions)
-    }
+    // END Communicate Back to ViewController
     
     func getWeatherReport(forAirport: String) {
         print("ViewModel: getWeatherReport(forAirport: \(forAirport))")
@@ -55,7 +61,7 @@ class WeatherViewModel: WeatherViewModelDelegate {
             let fetchedAirports = try context.fetch(fetchRequest)
             
             print("Found \(fetchedAirports.count) Airport(s) matching \(forAirport) in your local cache.")
-            //-------------------------- should be 0 or 1
+            //--------------------------> should be 0 or 1
             
             if fetchedAirports.count != 0 {
                 
@@ -85,35 +91,30 @@ class WeatherViewModel: WeatherViewModelDelegate {
                     print(":::::: EXPIRED, call the Network API")
                     isAirportExpired = true
                 }
-                
-                // TODO: This gives you 'isAirportExpired' value
-                
-                // TODO: Then, you can guard against 'isAirportExpired'
-                
+                // TODO: This gives you 'isAirportExpired' value; Then, you can guard against 'isAirportExpired'
             }
-
-            //guard fetchedAirports.count == 0 else {
             
-            guard isAirportExpired == true else {
+            guard isAirportExpired == true else { // was 'fetchedAirports.count == 0' originally
                 
 //                print("::: Oops, fetchedAirports.count does not equal 0!")
 //                print("::: meaning, we have something in Core Data")
 //                print("::: Note: you won't see any more Networking msgs after this due to return")
                 
                 //Pass a Response? back to DetailViewController
+//                DispatchQueue.main.async {
+//                    self.tellViewToShowDetail(conditions: fetchedAirports.first!.conditions!)
+//                }
                 DispatchQueue.main.async {
-                    self.tellViewToShowDetail(conditions: fetchedAirports.first!.conditions!)
+                    self.tellViewToShowDetail(airport: fetchedAirports.first!)
                 }
                  
 //                print(":::::: Fetched Airport Abbreviation: \(fetchedAirports.first?.abbreviation)")
 //                print(":::::: Fetched Airport Creation Date: \(fetchedAirports.first?.creationDate)")
 //                print(":::::: Fetched Conditions Lat: \(fetchedAirports.first?.conditions?.lat)")
 //                print(":::::: Fetched Conditions Lon: \(fetchedAirports.first?.conditions?.lon)")
-                //print(":::::: Fetched Airport: \(fetchedAirports.first?.conditions?.ident)")
-                
+//                print(":::::: Fetched Forecast Date: \(fetchedAirports.first?.forecast?.dateIssued)")
                 
 ///////////////////////////// Time Experimentation Stuff
-//
 //
 //                let dateFormatter = DateFormatter()
 //                //dateFormatter.dateFormat = "yyyy/MM/dd HH:mm" <-- FROM EXAMPLE
@@ -143,7 +144,6 @@ class WeatherViewModel: WeatherViewModelDelegate {
 //                }
 //
 ///////////////////////////// Time Experimentation Stuff
-                
                 
                 return
             }
@@ -203,7 +203,9 @@ class WeatherViewModel: WeatherViewModelDelegate {
                 
                 
                 // All this does is save TTT to Core Data
+                
                 self.saveAirportToCoreData(airportAbbreviation: forAirport, response: response)
+                
                 // we need something like: updateCache(with: decodedResponse)
                 // ^^ can't we combine them? -- we have Airport Abbreviation and Airport Response
                 // save Airport to Core Data with Airport text
@@ -227,10 +229,12 @@ class WeatherViewModel: WeatherViewModelDelegate {
     func saveAirportToCoreData(airportAbbreviation: String, response: Response) {
         print("Try saving to Core Data: \(airportAbbreviation)")
         
+        // New AIRPORT Entity
         let newAirport = Airport(context: self.context)
         newAirport.abbreviation = airportAbbreviation
         newAirport.creationDate = Date.now.description
         
+        // New CONDITIONS Entity
         let newConditions = CachedConditions(context: self.context)
         newConditions.ident = response.report.conditions?.ident
         newConditions.lat = response.report.conditions?.lat ?? 0.0
@@ -239,16 +243,23 @@ class WeatherViewModel: WeatherViewModelDelegate {
         newConditions.dewpointC = response.report.conditions?.dewpointC ?? 0.0
         newConditions.pressureHg = response.report.conditions?.pressureHg ?? 0.0
         
+        // New FORECAST Entity
+        let newForecast = CachedForecast(context: self.context)
+        newForecast.dateIssued = response.report.forecast?.dateIssued
+    
+        // TIE THEM TOGETHER:
         //newConditions.airport = newAirport <-- seems not to work :(
         newAirport.conditions = newConditions //<-- seems to work :)
+        newAirport.forecast = newForecast
         
+        // MSG BACK TO VIEWCONTROLLER
+//        DispatchQueue.main.async {
+//            self.tellViewToShowDetail(conditions: newConditions)
+//        }
         DispatchQueue.main.async {
-            self.tellViewToShowDetail(conditions: newConditions)
+            self.tellViewToShowDetail(airport: newAirport)
         }
         
-        // TODO: SAVE SOME FORECAST DATA SO YOU CAN TRY SWITCHING VIEWS
-        
-
         // Save to Core Data
         do {
             try self.context.save()

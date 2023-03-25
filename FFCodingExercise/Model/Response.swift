@@ -17,7 +17,7 @@ struct Report: Codable {
 }
 
 struct Forecast: Codable {
-    let dateIssued: String
+    let dateIssued: String?
 }
 
 struct Conditions: Codable {

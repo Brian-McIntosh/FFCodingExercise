@@ -12,6 +12,7 @@ protocol MyViewControllerDelegate {
     func receiveMsgFromViewModel(message: String)
     func navToDetailVC(response: Response)
     func navToDetailVC(conditions: CachedConditions)
+    func navToDetailVC(airport: Airport)
 }
 
 class ViewController: UIViewController, MyViewControllerDelegate {
@@ -85,6 +86,12 @@ class ViewController: UIViewController, MyViewControllerDelegate {
         let vc = storyboard?.instantiateViewController(identifier: "DetailViewController") as! DetailViewController
         vc.title = "Weather Conditions"
         vc.conditions = conditions
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    func navToDetailVC(airport: Airport) {
+        let vc = storyboard?.instantiateViewController(identifier: "DetailViewController") as! DetailViewController
+        vc.title = "Weather Conditions"
+        vc.airport = airport
         navigationController?.pushViewController(vc, animated: true)
     }
 }

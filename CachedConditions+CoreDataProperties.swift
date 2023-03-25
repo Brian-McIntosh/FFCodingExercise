@@ -2,7 +2,7 @@
 //  CachedConditions+CoreDataProperties.swift
 //  FFCodingExercise
 //
-//  Created by Brian McIntosh on 3/23/23.
+//  Created by Brian McIntosh on 3/25/23.
 //
 //
 
@@ -16,12 +16,12 @@ extension CachedConditions {
         return NSFetchRequest<CachedConditions>(entityName: "CachedConditions")
     }
 
+    @NSManaged public var dewpointC: Double
+    @NSManaged public var ident: String?
     @NSManaged public var lat: Double
     @NSManaged public var lon: Double
     @NSManaged public var pressureHg: Double
     @NSManaged public var tempC: Double
-    @NSManaged public var ident: String?
-    @NSManaged public var dewpointC: Double
     @NSManaged public var airport: Airport?
 
 }

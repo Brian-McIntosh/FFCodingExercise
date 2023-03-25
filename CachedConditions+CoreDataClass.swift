@@ -2,7 +2,7 @@
 //  CachedConditions+CoreDataClass.swift
 //  FFCodingExercise
 //
-//  Created by Brian McIntosh on 3/23/23.
+//  Created by Brian McIntosh on 3/25/23.
 //
 //
 

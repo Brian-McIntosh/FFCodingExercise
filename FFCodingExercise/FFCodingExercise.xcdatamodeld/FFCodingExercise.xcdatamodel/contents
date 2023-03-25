@@ -4,6 +4,7 @@
         <attribute name="abbreviation" optional="YES" attributeType="String"/>
         <attribute name="creationDate" optional="YES" attributeType="String"/>
         <relationship name="conditions" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CachedConditions" inverseName="airport" inverseEntity="CachedConditions"/>
+        <relationship name="forecast" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CachedForecast" inverseName="airport" inverseEntity="CachedForecast"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="abbreviation"/>
@@ -18,5 +19,9 @@
         <attribute name="pressureHg" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="tempC" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <relationship name="airport" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Airport" inverseName="conditions" inverseEntity="Airport"/>
+    </entity>
+    <entity name="CachedForecast" representedClassName="CachedForecast" syncable="YES">
+        <attribute name="dateIssued" optional="YES" attributeType="String"/>
+        <relationship name="airport" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Airport" inverseName="forecast" inverseEntity="Airport"/>
     </entity>
 </model>

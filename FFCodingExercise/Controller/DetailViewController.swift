@@ -22,23 +22,25 @@ class DetailViewController: UIViewController {
     // MARK: - PROPERTIES
     var response: Response?
     var conditions: CachedConditions?
+    var airport: Airport?
     var isForecastShowing: Bool = false
 
     // MARK: - LIFECYCLE
     override func viewDidLoad() {
         super.viewDidLoad()
-
         foreCastView.isHidden = true
+        forecastData.text = "temp"
+        
         // DetailVC airportAbbr: nil when view presented programmatically through viewModel as opposed to tableview
         //print("DetailVC airportAbbr: \(airportAbbr)")
         
+        latitudeLabel.text = airport?.conditions?.lat.description
+        longitudeLabel.text = airport?.conditions?.lon.description
+        tempLabel.text = airport?.conditions?.tempC.description
+        dewPointLabel.text = airport?.conditions?.dewpointC.description
+        pressureLabel.text = airport?.conditions?.pressureHg.description
         
-        
-        latitudeLabel.text = conditions?.lat.description
-        longitudeLabel.text = conditions?.lon.description
-        tempLabel.text = conditions?.tempC.description
-        dewPointLabel.text = conditions?.dewpointC.description
-        pressureLabel.text = conditions?.pressureHg.description
+        forecastData.text = airport?.forecast?.dateIssued
     }
     
     @IBAction func toggleButtonPressed(_ sender: Any) {

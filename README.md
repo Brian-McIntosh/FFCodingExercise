@@ -14,4 +14,13 @@
 <img src="https://github.com/Brian-McIntosh/FFCodingExercise/blob/main/Presentation/Presentation.014.jpeg" width="900"/>
 <img src="https://github.com/Brian-McIntosh/FFCodingExercise/blob/main/Presentation/Presentation.015.jpeg" width="900"/>
 <img src="https://github.com/Brian-McIntosh/FFCodingExercise/blob/main/Presentation/Presentation.016.jpeg" width="900"/>
-
+<img src="https://github.com/Brian-McIntosh/FFCodingExercise/blob/main/Presentation/Presentation.017.jpeg" width="900"/>
+<img src="https://github.com/Brian-McIntosh/FFCodingExercise/blob/main/Presentation/Presentation.018.jpeg" width="900"/>
+<img src="https://github.com/Brian-McIntosh/FFCodingExercise/blob/main/Presentation/Presentation.019.jpeg" width="900"/>
+<img src="https://github.com/Brian-McIntosh/FFCodingExercise/blob/main/Presentation/Presentation.020.jpeg" width="900"/>
+<img src="https://github.com/Brian-McIntosh/FFCodingExercise/blob/main/Presentation/Presentation.021.jpeg" width="900"/>
+<img src="https://github.com/Brian-McIntosh/FFCodingExercise/blob/main/Presentation/Presentation.022.jpeg" width="900"/>
+<img src="https://github.com/Brian-McIntosh/FFCodingExercise/blob/main/Presentation/Presentation.023.jpeg" width="900"/>
+<img src="https://github.com/Brian-McIntosh/FFCodingExercise/blob/main/Presentation/Presentation.024.jpeg" width="900"/>
+<img src="https://github.com/Brian-McIntosh/FFCodingExercise/blob/main/Presentation/Presentation.025.jpeg" width="900"/>
+<img src="https://github.com/Brian-McIntosh/FFCodingExercise/blob/main/Presentation/Presentation.026.jpeg" width="900"/>
